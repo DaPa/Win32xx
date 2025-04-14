@@ -119,6 +119,10 @@ LRESULT CDockList::WndProc(UINT msg, WPARAM wparam, LPARAM lparam)
 {
     try
     {
+        if (msg == WM_CLOSE) {
+            CMainFrame& mainFrame = GetSplitterApp()->GetMainFrame();
+            mainFrame.GetFrameMenu().CheckMenuItem(IDM_VIEW_LIST, MF_UNCHECKED);
+        }
         // Pass unhandled messages on for default processing.
         return WndProcDefault(msg, wparam, lparam);
     }

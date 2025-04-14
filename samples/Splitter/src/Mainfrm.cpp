@@ -138,15 +138,28 @@ void CMainFrame::OnInitialUpdate()
 BOOL CMainFrame::OnViewList()
 {
     DWORD style = DS_NO_UNDOCK | DS_NO_CAPTION | DS_CLIENTEDGE;
-    if (m_pDockList->IsDocked())
+
+    // in case the Pane was closed, then load it using defaults as per LoadDefaultWindowPanes
+    if (!m_pDockList->IsWindow())
     {
-        m_pDockList->Hide();
-        GetFrameMenu().CheckMenuItem(IDM_VIEW_LIST, MF_UNCHECKED);
+        // Set the styles for splitter panes.
+        SetDockStyle(style);
+        CRect viewRect = GetViewRect();
+        m_pDockList = static_cast<CDockList*>(m_pDockTree->AddDockedChild(new CDockList, style | DS_DOCKED_RIGHT, viewRect.Width() / 2, ID_DOCK_LIST));
+        GetFrameMenu().CheckMenuItem(IDM_VIEW_LIST, MF_CHECKED);
     }
     else
     {
-        m_pDockTree->Dock(m_pDockList, style | DS_DOCKED_RIGHT);
-        GetFrameMenu().CheckMenuItem(IDM_VIEW_LIST, MF_CHECKED);
+        if (m_pDockList->IsDocked())
+        {
+            m_pDockList->Hide();
+            GetFrameMenu().CheckMenuItem(IDM_VIEW_LIST, MF_UNCHECKED);
+        }
+        else
+        {
+            m_pDockTree->Dock(m_pDockList, style | DS_DOCKED_RIGHT);
+            GetFrameMenu().CheckMenuItem(IDM_VIEW_LIST, MF_CHECKED);
+        }
     }
 
     return TRUE;
