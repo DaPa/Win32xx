@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include "SplitterPanes.h"
+#include "SplitterApp.h"
+#include "resource.h"
 
 //////////////////////////////////
 // CDockText function definitions.
@@ -23,6 +25,10 @@ LRESULT CDockText::WndProc(UINT msg, WPARAM wparam, LPARAM lparam)
 {
     try
     {
+        if (msg == WM_CLOSE) {
+            CMainFrame& mainFrame = GetSplitterApp()->GetMainFrame();
+            mainFrame.GetFrameMenu().CheckMenuItem(IDM_VIEW_TEXT, MF_UNCHECKED);
+        }
         // Pass unhandled messages on for default processing.
         return WndProcDefault(msg, wparam, lparam);
     }

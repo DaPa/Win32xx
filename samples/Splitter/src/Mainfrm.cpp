@@ -157,15 +157,27 @@ BOOL CMainFrame::OnViewText()
 {
     DWORD style = DS_NO_UNDOCK | DS_NO_CAPTION | DS_CLIENTEDGE;
 
-    if (m_pDockText->IsDocked())
+    // in case the Pane was closed, then load it using defaults as per LoadDefaultWindowPanes
+    if (!m_pDockText->IsWindow())
     {
-        m_pDockText->Hide();
-        GetFrameMenu().CheckMenuItem(IDM_VIEW_TEXT, MF_UNCHECKED);
+        // Set the styles for splitter panes.
+        SetDockStyle(style);
+        CRect viewRect = GetViewRect();
+        m_pDockText = static_cast<CDockText*>(AddDockedChild(new CDockText, style | DS_DOCKED_RIGHT, viewRect.Width() / 2, ID_DOCK_TEXT));
+        GetFrameMenu().CheckMenuItem(IDM_VIEW_TEXT, MF_CHECKED);
     }
     else
     {
-        Dock(m_pDockText, style | DS_DOCKED_RIGHT);
-        GetFrameMenu().CheckMenuItem(IDM_VIEW_TEXT, MF_CHECKED);
+        if (m_pDockText->IsDocked())
+        {
+            m_pDockText->Hide();
+            GetFrameMenu().CheckMenuItem(IDM_VIEW_TEXT, MF_UNCHECKED);
+        }
+        else
+        {
+            Dock(m_pDockText, style | DS_DOCKED_RIGHT);
+            GetFrameMenu().CheckMenuItem(IDM_VIEW_TEXT, MF_CHECKED);
+        }
     }
 
     return TRUE;

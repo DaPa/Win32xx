@@ -17,6 +17,7 @@ class CSplitterApp : public CWinApp
 public:
     CSplitterApp() = default;
     virtual ~CSplitterApp() override = default;
+    CMainFrame& GetMainFrame() { return m_frame; }
 
 protected:
     // Virtual functions that override base class functions
@@ -29,5 +30,7 @@ private:
     CMainFrame m_frame;
 };
 
+// returns a pointer to the CSplitterApp object
+inline CSplitterApp* GetSplitterApp() { return static_cast<CSplitterApp*>(GetApp()); }
 
-#endif // define EFRAMEAPP_H
+#endif // define SPLITTERAPP_H
