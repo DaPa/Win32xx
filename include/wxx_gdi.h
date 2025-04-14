@@ -1107,12 +1107,15 @@ namespace Win32xx
 
     inline CBitmap::CBitmap(LPCTSTR resourceName)
     {
-        LoadBitmap(resourceName);
+        BOOL b = LoadBitmap(resourceName);
+        assert(b);
     }
 
     inline CBitmap::CBitmap(UINT resourceID)
     {
-        LoadBitmap(resourceID);
+        BOOL b = LoadBitmap(resourceID);
+        assert(b);
+
     }
 
     inline CBitmap::CBitmap(const CBitmap& rhs) : CGDIObject(rhs)
