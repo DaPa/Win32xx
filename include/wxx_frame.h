@@ -1582,7 +1582,14 @@ namespace Win32xx
     inline CRect CFrameT<T>::ExcludeChildRect(const CRect& clientRect, HWND child) const
     {
         CRect clientRC = clientRect;
-        VERIFY(T::ClientToScreen(clientRC));
+        if (!T::ClientToScreen(clientRC))
+        {
+            CString str;
+            DWORD err = GetLastError();
+            str << "clientRC: l=" << clientRC.left << ", t=" << clientRC.top << ", r=" << clientRC.right << ", b=" << clientRC.bottom << ", GetLastError=" << err;
+            ::MessageBox(nullptr, str, L"CFrameT<T>::ExcludeChildRect -> ClientToScreen", MB_ICONERROR);
+            assert(err == 0);
+        }
 
         CRect childRect;
         VERIFY(::GetWindowRect(child, &childRect));
@@ -1602,7 +1609,15 @@ namespace Win32xx
                 clientRC.right -= childRect.Width();
         }
 
-        VERIFY(T::ScreenToClient(clientRC));
+
+        if (!T::ScreenToClient(clientRC))
+        {
+            CString str;
+            DWORD err = GetLastError();
+            str << "clientRC: l=" << clientRC.left << ", t=" << clientRC.top << ", r=" << clientRC.right << ", b=" << clientRC.bottom << ", GetLastError=" << err;
+            ::MessageBox(nullptr, str, L"CFrameT<T>::ExcludeChildRect -> ScreenToClient", MB_ICONERROR);
+            assert(err == 0);
+        }
 
         return clientRC;
     }

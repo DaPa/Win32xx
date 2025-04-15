@@ -1,3 +1,9 @@
 samples/Splitter/ProjectFiles/.vs/
 samples/Splitter/ProjectFiles/x64/
 samples/Splitter/ProjectFiles/Splitter_2022.vcxproj.user
+samples/Titlebar/ProjectFiles/.vs/
+samples/Titlebar/ProjectFiles/x64/
+samples/Titlebar/ProjectFiles/Titlebar_2022.vcxproj.user
+samples/TitlebarFrame/ProjectFiles/.vs/
+samples/TitlebarFrame/ProjectFiles/x64/
+samples/TitlebarFrame/ProjectFiles/TitlebarFrame_2022.vcxproj.user

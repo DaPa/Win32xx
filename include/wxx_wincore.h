@@ -1380,6 +1380,7 @@ namespace Win32xx
     inline BOOL CWnd::ClientToScreen(RECT& rect) const
     {
         assert(IsWindow());
+        SetLastError(0);
         return static_cast<BOOL>(::MapWindowPoints(*this, HWND_DESKTOP,
             reinterpret_cast<LPPOINT>(&rect), 2));
     }
@@ -2126,6 +2127,7 @@ namespace Win32xx
     inline BOOL CWnd::ScreenToClient(RECT& rect) const
     {
         assert(IsWindow());
+        SetLastError(0);
         return static_cast<BOOL>(::MapWindowPoints(HWND_DESKTOP, *this,
             reinterpret_cast<LPPOINT>(&rect), 2));
     }
