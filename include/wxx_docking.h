@@ -4117,7 +4117,7 @@ namespace Win32xx
         ::SendMessage(frame, WM_NOTIFY, wparam, lparam);
 
         // Initiate the window move.
-        SetCursorPos(pt.x, pt.y);
+        //SetCursorPos(pt.x, pt.y);
         VERIFY(ScreenToClient(pt));
         wparam = static_cast<WPARAM>(SC_MOVE | 0x0002);
         lparam = MAKELPARAM(pt.x, pt.y);
@@ -4337,6 +4337,8 @@ namespace Win32xx
         if (!pDocker) return;
 
         CRect rc = GetDockClient().GetWindowRect();
+        pt.x = (rc.right + rc.left) / 2;
+        pt.y = rc.top + 20;
         VERIFY(ScreenToClient(rc));
         VERIFY(pDocker->GetDockClient().SetWindowPos(HWND_TOP, rc, SWP_SHOWWINDOW));
         pDocker->Undock(pt, showUndocked);
