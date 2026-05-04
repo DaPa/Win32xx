@@ -2697,7 +2697,11 @@ namespace Win32xx
     // Could be the dock ancestor or an undocked docker.
     inline CDocker* CDocker::GetTopmostDocker() const
     {
-        CDocker* pDockTopLevel = (CDocker* const)this;
+#if 0
+        CDocker* pDockTopLevel = (CDocker* const)this;  // error: type qualifiers ignored on cast result type [-Werror=ignored-qualifiers]
+#else
+        CDocker* pDockTopLevel = const_cast<CDocker*>(this);
+#endif
 
         while (pDockTopLevel->GetDockParent())
         {
