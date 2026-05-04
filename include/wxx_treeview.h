@@ -41,7 +41,7 @@
 #define _WIN32XX_TREEVIEW_H_
 
 #include "wxx_wincore.h"
-
+#include <cstring>  // for memcpy
 
 // Disable macros from Windowsx.h
 #undef GetNextSibling
@@ -357,14 +357,26 @@ namespace Win32xx
     inline CRect CTreeView::GetItemRect(HTREEITEM item, BOOL isTextOnly) const
     {
         assert(IsWindow());
+#if 0
         CRect rc;
 
         // As per the Microsoft's recommendation for handling TVM_GETITEMRECT.
-        *reinterpret_cast<HTREEITEM*>(&rc) = item;
+        *reinterpret_cast<HTREEITEM*>(&rc) = item;  // error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
         WPARAM wparam = static_cast<WPARAM>(isTextOnly);
         LPARAM lparam = reinterpret_cast<LPARAM>(&rc);
         SendMessage(TVM_GETITEMRECT, wparam, lparam);
         return rc;
+#else
+        RECT rc;
+
+        // Strict-aliasing-safe way to place HTREEITEM into RECT storage
+        static_assert(sizeof(item) <= sizeof(rc), "RECT too small for HTREEITEM");
+        std::memcpy(&rc, &item, sizeof(item));
+        WPARAM wparam = static_cast<WPARAM>(isTextOnly);
+        LPARAM lparam = reinterpret_cast<LPARAM>(&rc);
+        SendMessage(TVM_GETITEMRECT, wparam, lparam);
+        return CRect(rc);
+#endif
     }
 
     // Retrieves the text for a tree-view item.
