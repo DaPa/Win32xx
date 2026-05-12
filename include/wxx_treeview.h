@@ -357,6 +357,9 @@ namespace Win32xx
     inline CRect CTreeView::GetItemRect(HTREEITEM item, BOOL isTextOnly) const
     {
         assert(IsWindow());
+// Note: to avoid this change, use below suppression in CMakeLists.txt:
+//   # avoid Release build fail with GCC and "-Wall": lib/Win32xx/include/wxx_treeview.h:364:10: error: dereferencing type-punned pointer will break strict-aliasing rules [-Werror=strict-aliasing]
+//   target_compile_options(${PROJECT_NAME} PRIVATE -Wno-strict-aliasing)
 #if 0
         CRect rc;
 
